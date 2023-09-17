@@ -45,20 +45,15 @@ exports.signup = catchAsync(async (req, res, next) => {
     passwordConfirm: req.body.passwordConfirm
   });
 
-  console.log(req.body);
   //protocol http or https and req.get('host') will be the local host
 
-  // const url = `${req.protocol}://localhost:3000/me`;
+  const url = `${req.protocol}://localhost:3000/me`;
   // console.log(url);
-  // await new Email(newUser, url).sendWelcome();
+  await new Email(newUser, url).sendWelcome();
 
   createSendToken(newUser, 201, res);
 });
 //
-//protocol http or https and req.get('host') will be the local host
-// const url = `${req.protocol}://localhost:3000/me`;
-// console.log(url);
-// await new Email(newUser, url).sendWelcome();
 
 exports.login = catchAsync(async (req, res, next) => {
   const { email, password } = req.body; // this es-6 of const email or password = req.body.email or req.body.password
@@ -76,7 +71,6 @@ exports.login = catchAsync(async (req, res, next) => {
     //if no user correct we don't have to check password so we moved the line to the if condition
     return next(new AppError('Invalid email or password', 401));
   }
-  console.log(user);
   //3) if everything is ok, send token to client
   createSendToken(user, 200, res);
 });
@@ -105,7 +99,6 @@ exports.protect = catchAsync(async (req, res, next) => {
   } else if (req.cookies.jwt) {
     token = req.cookies.jwt;
   }
-  // console.log(token);
 
   if (!token) {
     return next(
@@ -121,7 +114,6 @@ exports.protect = catchAsync(async (req, res, next) => {
   if (!currentUser) {
     return next(new AppError('The user of this token is no longer exist', 401));
   }
-  // console.log(decoded);
   //4) Check if user changed password after the token was issued
   if (currentUser.changedPasswordAfter(decoded.iat)) {
     return next(

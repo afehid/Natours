@@ -93,7 +93,6 @@ reviewSchema.post('save', function() {
 // to access the calcAverageRatings we have to use POST middleware
 reviewSchema.post(/^findOneAnd/, async function(doc) {
   await doc.constructor.calcAverageRatings(doc.tour);
-  // console.log(doc);
   //doc refers to the document review we used to findOneAndUpdate or Delete
 });
 

@@ -100,7 +100,7 @@ userSchema.methods.createPasswordResetToken = function() {
     .digest('hex');
 
   this.passwordResetExpires = Date.now() + 10 * 60 * 1000; // expiration date 10 mins
-  console.log({ resetToken }, this.passwordResetToken);
+  // console.log({ resetToken }, this.passwordResetToken);
   return resetToken; //we send the resetToken not the hashed one
 };
 const User = mongoose.model('User', userSchema);
